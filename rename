@@ -1,0 +1,48 @@
+import os
+from datetime import datetime
+
+# 네트워크 경로 설정
+network_path = r"\\192.168.110.10\leenos_file_svr\leenos_file_svr\F&C사업본부\온라인팀\★★★웹디자인\★키플링자사몰\25년\1월\인플루언서 컷 상세페이지 상단 이미지\스타일링"
+
+# 변경할 키워드와 대체 문자열 매핑
+rename_map = {
+    "박싱데이": "boxingday",
+    "랜딩페이지": "LAND",
+    "몽키": "monkey",
+    "배너": "banner",
+    "키플링": "kipling",
+    "설-기획전":"lunar",
+    "델리아":"delia",
+    "로렌":"loren",
+    "리리":"riri",
+    "마샤":"masha",
+    "말리카":"malika",
+    "비나":"bina",
+    "얼바나":"urbana",
+    "클라스":"clas",
+    " ":"_",
+}
+
+# 파일 이름 변경 함수
+def rename_files_in_directory(directory, rename_dict):
+    # 오늘 날짜 가져오기
+    today_date = datetime.now().strftime("%Y%m%d")
+    try:
+        for filename in os.listdir(directory):
+            # 새 파일 이름 생성
+            new_filename = filename
+            for old_text, new_text in rename_dict.items():
+                new_filename = new_filename.replace(old_text, new_text)
+            # 날짜와 밑줄 추가
+            new_filename = f"{today_date}_{new_filename}"
+            # 파일 이름 변경
+            if new_filename != filename:
+                old_file_path = os.path.join(directory, filename)
+                new_file_path = os.path.join(directory, new_filename)
+                os.rename(old_file_path, new_file_path)
+                print(f"Renamed: {filename} -> {new_filename}")
+    except Exception as e:
+        print(f"Error: {e}")
+
+# 파일 이름 변경 실행
+rename_files_in_directory(network_path, rename_map)
